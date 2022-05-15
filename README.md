@@ -6,13 +6,14 @@ MLimit is an open-source project for time series analysis and anomaly detection 
 
 This project is composed by multiple layers
 - [Mlimit-merlion](https://github.com/MaurizioBella/mlimit-merlion) Core engine for the time-series-analsys.
-- [mlimit-sf](https://github.com/MaurizioBella/mlimit-sf) Components needed to show the forecasted data in Salesforce acting a Presentation Layer.
+- [mlimit-sf](https://github.com/MaurizioBella/mlimit-sf) Components needed to show the forecasted data in Salesforce acting as a Presentation Layer.
 
 #### State of Art
 
 <img src="docs/mlimit-overview.gif" width=75% height=75% >
-
+<!--
 - [Documentation](https://mauriziobella.github.io/mlimit/) (working in progress)
+-->
 
 ## Prerequisite
 
@@ -91,33 +92,33 @@ rq info --interval 0.5 # monitoring the Redis queue
 
 #### OAuth 2 (default and recommended)
 
-    - CONSUMER_KEY (The connected app consumer key, which you can find on the connected app Manage Connected Apps page or from the connected app definition.)
-    - CONSUMER_SECRET (The connected app consumer secret, which you can find on the connected app Manage Connected Apps page or from the connected app definition.)
-    - SFDC_MYDOMAIN (The My Domain uses Salesforce domain suffixes, example: ```company.my.salesforce.com```)
-    - SFDC_AUTH (default set to ```oauth2```)
+- CONSUMER_KEY (The connected app consumer key, which you can find on the connected app Manage Connected Apps page or from the connected app definition.)
+- CONSUMER_SECRET (The connected app consumer secret, which you can find on the connected app Manage Connected Apps page or from the connected app definition.)
+- SFDC_MYDOMAIN (The My Domain uses Salesforce domain suffixes, example: ```company.my.salesforce.com```)
+- SFDC_AUTH (default set to ```oauth2```)
 
 #### Soap Login
 
-    - SFDC_USERNAME (Salesforce Username used to retry the Governor limits)
-    - SFDC_PASSWORD (Salesforce User Password)
-    - SFDC_SECURITY_TOKEN (Salesforce User Security Token)
-    - SFDC_MYDOMAIN (The My Domain uses Salesforce domain suffixes, example: company.my.salesforce.com)
-    - SFDC_AUTH (change to ```login```)
+- SFDC_USERNAME (Salesforce Username used to retry the Governor limits)
+- SFDC_PASSWORD (Salesforce User Password)
+- SFDC_SECURITY_TOKEN (Salesforce User Security Token)
+- SFDC_MYDOMAIN (The My Domain uses Salesforce domain suffixes, example: company.my.salesforce.com)
+- SFDC_AUTH (change to ```login```)
     
 #### Merlion configuration
-    - MERLION_PLOT_SHOW (```True``` or ```False``` to see the plot - it works only locally)
-    - MERLION_MAX_FORECAST_STEPS (default ```100``` - forecasting units based on the frequency e.g., 100 hours)
-    - MERLION_TRAINING_SAMPLE (defaul ```90``` - It uses 90% of the DataFrame as training data and the 10% as testing data
-    - MERLION_PREDICT_MODEL (recommended leave this empty) Specify a number from 1 to 5 if you want to use a specific model; otherwise, Merlion will use the one with sMAPE lower. You can see the model selected in the column model_name__c in table measureconfig__c
-    - MERLION_LIMIT_EVENTS (default 12 - history of data minimum to start forecasting)
+- MERLION_PLOT_SHOW (```True``` or ```False``` to see the plot - it works only locally)
+- MERLION_MAX_FORECAST_STEPS (default ```100``` - forecasting units based on the frequency e.g., 100 hours)
+- MERLION_TRAINING_SAMPLE (defaul ```90``` - It uses 90% of the DataFrame as training data and the 10% as testing data
+- MERLION_PREDICT_MODEL (recommended leave this empty) Specify a number from 1 to 5 if you want to use a specific model; otherwise, Merlion will use the one with sMAPE lower. You can see the model selected in the column model_name__c in table measureconfig__c
+- MERLION_LIMIT_EVENTS (default 12 - history of minimum data to start forecasting)
 #### Other configurations
  
-    - DATABASE_HEROKU_CONNECT   : ```True``` if you want to use it with Heroku Connect (False for local project)
-    - DATABASE_RETENTION_DAYS   : Delete records older than # days (default 7)
-    - WORKER_TYPE               : Jobs executed via web (```1```), or via worker (```2```)
-    - RETRY_DATA_FROM_SF        : ```True``` or ```False``` to retry data from the Salesforce Org or not
-    - AWS_S3_ENABLE             : ```True``` or ```False``` to save the models in AWS S3
-    - AWS_S3_BUCKET_NAME        : the bucket name (configure AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY)
+- DATABASE_HEROKU_CONNECT   : ```True``` if you want to use it with Heroku Connect (False for local project)
+- DATABASE_RETENTION_DAYS   : Delete records older than # days (default 7)
+- WORKER_TYPE               : Jobs executed via web (```1```), or via worker (```2```)
+- RETRY_DATA_FROM_SF        : ```True``` or ```False``` to retry data from the Salesforce Org or not
+- AWS_S3_ENABLE             : ```True``` or ```False``` to save the models in AWS S3
+- AWS_S3_BUCKET_NAME        : the bucket name (configure AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY)
 
 <!-- <img src="docs/mlimit_deploy_new_app.gif" width=75% height=75% > -->
 
