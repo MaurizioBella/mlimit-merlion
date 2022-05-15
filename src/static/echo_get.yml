@@ -1,0 +1,14 @@
+echo message returning the same message sent
+In this example the specification is taken from external YAML file
+---
+tags:
+  - echo
+responses:
+  200:
+    description: echo message data
+    schema:
+      id: msg
+      properties:
+        msg:
+          type: string
+          default: Hello world!

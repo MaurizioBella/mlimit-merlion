@@ -1,0 +1,187 @@
+{
+  "name": "MLimit Time Series Analysis Salesforce Limits",
+  "description": "MLimit is an open-source project for time series analysis and anomaly detection using Merlion",
+  "keywords": [
+    "python",
+    "redis",
+    "caching",
+    "merlion",
+    "salesforce",
+    "machine learning",
+    "time series analysis",
+    "postgresql",
+    "heroku",
+    "heroku connect"
+  ],
+  "logo": "https://i.ibb.co/9svTDhD/favicon.png",
+  "image": "heroku/python",
+  "website": "https://mauriziobella.github.io/mlimit-merlion/",
+  "repository": "https://github.com/MaurizioBella/mlimit-merlion",
+  "success_url": "/",
+  "scripts": {
+    "postdeploy": "python src/release/postdeploy"
+  },
+  "env": {
+    "CONSUMER_KEY": {
+      "description": "The connected app consumer key, which you can find on the connected app Manage Connected Apps page or from the connected app definition.",
+      "value": "",
+      "required": true
+    },
+    "CONSUMER_SECRET": {
+      "description": "The connected app consumer secret, which you can find on the connected app Manage Connected Apps page or from the connected app definition.",
+      "value": "",
+      "required": true
+    },
+    "SFDC_MYDOMAIN": {
+      "description": "A My Domain uses Salesforce domain suffixes, example: company.my.salesforce.com",
+      "value": "",
+      "required": true
+    },
+    "SFDC_AUTH": {
+      "description": "Salesforce authentication: default set to oauth2 - change to login for username and password",
+      "value": "oauth2",
+      "required": true
+    },
+    "SFDC_USERNAME": {
+      "description": "Salesforce username",
+      "value": "",
+      "required": false
+    },
+    "SFDC_PASSWORD": {
+      "description": "Salesforce password for the user used to integrate with",
+      "value": "",
+      "required": false
+    },
+    "SFDC_SECURITY_TOKEN": {
+      "description": "Salesforce security token",
+      "value": "",
+      "required": false
+    },
+    "SFDC_SANDBOX": {
+      "description": "True if the Organization is a Sandbox or False if not",
+      "value": "False",
+      "required": false
+    },
+    "SECRET_KEY": {
+      "description": "A secret key for verifying the integrity of signed cookies.",
+      "generator": "secret",
+      "required": false
+    },
+    "DATABASE_RETENTION_DAYS": {
+      "description": "How many days before the process deletes records from the resourcelimit table",
+      "value": "7",
+      "required": false
+    },
+    "DATABASE_HEROKU_CONNECT": {
+      "description": "True if Heroku Connect is used",
+      "value": "True",
+      "required": false
+    },
+    "CREATE_ENGINE_DEBUG": {
+      "description": "Enable echo on SQLAlchemy create_engine",
+      "value": "False",
+      "required": false
+    },
+    "LOGLEVEL": {
+      "description": "Logging log level",
+      "value": "DEBUG",
+      "required": false
+    },
+    "APP_SETTINGS": {
+      "description": "The flask configuration",
+      "value": "src.config.DevelopmentConfig",
+      "required": false
+    },
+    "FLASK_APP": {
+      "description": "Do not change! Flask home directory",
+      "value": "src",
+      "required": false
+    },
+    "MERLION_LIMIT_EVENTS": {
+      "description": "How many events before start fitting the model",
+      "value": "24",
+      "required": false
+    },
+    "MERLION_MAX_FORECAST_STEPS": {
+      "description": "forecasting units based on the frequency e.g., 100 hours",
+      "value": "100",
+      "required": false
+    },
+    "MERLION_TRAINING_SAMPLE": {
+      "description": "It uses 90% of the DataFrame as training data and the 10% as testing data",
+      "value": "90",
+      "required": false
+    },
+    "MERLION_PLOT_SHOW": {
+      "description": "False to do not show the plot. Set to True for local deployment",
+      "value": "False",
+      "required": false
+    },
+    "MERLION_PREDICT_MODEL": {
+      "description": "Merlion Model used to forecasting",
+      "value": "1",
+      "required": false
+    },    
+    "RETRY_DATA_FROM_SF": {
+      "description": "True to retry data from the Salesforce Org, False not",
+      "value": "True",
+      "required": false
+    },
+    "AWS_S3_ENABLE": {
+      "description": "Save the Merlion models in AWS S3",
+      "value": "False",
+      "required": false
+    },
+    "AWS_S3_BUCKET_NAME": {
+      "description": "AWS S3 bucket name",
+      "value": "mlimit",
+      "required": false
+    },
+    "AWS_S3_ACCESS_KEY_ID": {
+      "description": "AWS S3 Key ID",
+      "value": "",
+      "required": false
+    },
+    "AWS_S3_SECRET_ACCESS_KEY": {
+      "description": "Secret access keys are—as the name implies—secrets, like your password",
+      "value": "",
+      "required": false
+    },
+    "WORKER_TYPE": {
+      "description": "Jobs executed via web (1), or via worker (2)",
+      "value": "2",
+      "required": false
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    },
+    "worker": {
+      "quantity": 0,
+      "size": "free"
+    }
+  },
+  "addons": [
+    "herokuconnect:demo",
+    "heroku-postgresql:hobby-dev",
+    "heroku-redis:hobby-dev",
+    "scheduler:standard"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-pgbouncer"
+    },
+    {
+      "url": "heroku/python"
+    }
+  ],
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "pytest testing/tests/"
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:13.1
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "root" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - APP_DB_USER=docker
+      - APP_DB_PASS=docker
+      - APP_DB_NAME=docker
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+    ports:
+      - 5432:5432
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+  memcached:
+    image: "docker.io/bitnami/memcached:1-debian-10"
+    ports:
+      - "11211:11211"
+    environment:
+      - MEMCACHED_USERNAME=root
+      - MEMCACHED_PASSWORD=docker
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"

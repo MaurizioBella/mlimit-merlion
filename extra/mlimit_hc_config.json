@@ -1,0 +1,238 @@
+{
+  "mappings": [
+    {
+      "object_name": "ConfigAuth__c",
+      "config": {
+        "indexes": {
+          "SystemModstamp": {
+            "unique": false
+          },
+          "Id": {
+            "unique": true
+          },
+          "externalid__c": {
+            "unique": true
+          }
+        },
+        "sf_max_daily_api_calls": 30000,
+        "access": "read_write",
+        "upsert_field": "externalid__c",
+        "applied_at": "2022-05-10T03:06:14.300712Z",
+        "sf_polling_seconds": 600,
+        "sf_notify_enabled": false,
+        "fields": {
+          "token_type__c": {},
+          "orgid__c": {},
+          "access_token__c": {},
+          "Name": {},
+          "refresh_token__c": {},
+          "scope__c": {},
+          "IsDeleted": {},
+          "SystemModstamp": {},
+          "oauth_signature__c": {},
+          "CreatedDate": {},
+          "Id": {},
+          "issued_at__c": {},
+          "userid__c": {},
+          "externalid__c": {},
+          "active__c": {},
+          "instance_url__c": {},
+          "heroku_app_name__c": {}
+        }
+      }
+    },
+    {
+      "object_name": "Measure_Config_Type__c",
+      "config": {
+        "access": "read_write",
+        "sf_notify_enabled": false,
+        "sf_polling_seconds": 600,
+        "sf_max_daily_api_calls": 30000,
+        "fields": {
+          "CreatedDate": {},
+          "Id": {},
+          "IsDeleted": {},
+          "Name": {},
+          "SystemModstamp": {},
+          "externalid__c": {},
+          "active__c": {}
+        },
+        "indexes": {
+          "Id": {
+            "unique": true
+          },
+          "SystemModstamp": {
+            "unique": false
+          },
+          "externalid__c": {
+            "unique": true
+          }
+        },
+        "upsert_field": "externalid__c"
+      }
+    },
+    {
+      "object_name": "forecaster__c",
+      "config": {
+        "access": "read_write",
+        "sf_notify_enabled": false,
+        "sf_polling_seconds": 600,
+        "sf_max_daily_api_calls": 30000,
+        "fields": {
+          "anomaly__c": {},
+          "yhat__c": {},
+          "multiplicative_terms_upper__c": {},
+          "multiplicative_terms_lower__c": {},
+          "trend_upper__c": {},
+          "max_limit__c": {},
+          "trend_lower__c": {},
+          "multiplicative_terms__c": {},
+          "trend__c": {},
+          "Name": {},
+          "additive_terms_upper__c": {},
+          "additive_terms_lower__c": {},
+          "additive_terms__c": {},
+          "anomaly_weight__c": {},
+          "IsDeleted": {},
+          "SystemModstamp": {},
+          "ds__c": {},
+          "CreatedDate": {},
+          "fact__c": {},
+          "Id": {},
+          "externalid__c": {},
+          "limitname__c": {},
+          "yhat_upper__c": {},
+          "yhat_lower__c": {}
+        },
+        "indexes": {
+          "SystemModstamp": {
+            "unique": false
+          },
+          "Id": {
+            "unique": true
+          },
+          "externalid__c": {
+            "unique": true
+          }
+        },
+        "upsert_field": "externalid__c"
+      }
+    },
+    {
+      "object_name": "holiday__c",
+      "config": {
+        "access": "read_only",
+        "sf_notify_enabled": false,
+        "sf_polling_seconds": 600,
+        "sf_max_daily_api_calls": 30000,
+        "fields": {
+          "CreatedDate": {},
+          "Id": {},
+          "IsDeleted": {},
+          "Name": {},
+          "SystemModstamp": {},
+          "ds__c": {},
+          "limitname__c": {},
+          "holiday__c": {}
+        },
+        "indexes": {
+          "Id": {
+            "unique": true
+          },
+          "SystemModstamp": {
+            "unique": false
+          }
+        }
+      }
+    },
+    {
+      "object_name": "measure__c",
+      "config": {
+        "access": "read_write",
+        "sf_notify_enabled": false,
+        "sf_polling_seconds": 600,
+        "sf_max_daily_api_calls": 30000,
+        "fields": {
+          "Name": {},
+          "max_value__c": {},
+          "IsDeleted": {},
+          "SystemModstamp": {},
+          "CreatedDate": {},
+          "Id": {},
+          "remaining_value__c": {},
+          "eventdate__c": {},
+          "externalid__c": {},
+          "limitname__c": {}
+        },
+        "indexes": {
+          "SystemModstamp": {
+            "unique": false
+          },
+          "Id": {
+            "unique": true
+          },
+          "externalid__c": {
+            "unique": true
+          }
+        },
+        "upsert_field": "externalid__c"
+      }
+    },
+    {
+      "object_name": "measureconfig__c",
+      "config": {
+        "indexes": {
+          "SystemModstamp": {
+            "unique": false
+          },
+          "Id": {
+            "unique": true
+          },
+          "externalid__c": {
+            "unique": true
+          }
+        },
+        "sf_max_daily_api_calls": 30000,
+        "access": "read_write",
+        "upsert_field": "externalid__c",
+        "applied_at": "2022-04-24T22:44:20.750205Z",
+        "sf_polling_seconds": 600,
+        "sf_notify_enabled": false,
+        "fields": {
+          "Model_Name__c": {},
+          "smape__c": {},
+          "frequency__c": {},
+          "source__c": {},
+          "Model_Path__c": {},
+          "Name": {},
+          "max_value__c": {},
+          "IsDeleted": {},
+          "SystemModstamp": {},
+          "last_train_time__c": {},
+          "CreatedDate": {},
+          "rmse__c": {},
+          "Id": {},
+          "query__c": {},
+          "externalid__c": {},
+          "active__c": {}
+        }
+      }
+    }
+  ],
+  "connection": {
+    "app_name": "mlimit",
+    "organization_id": "00D5w000003xhN2EAI",
+    "exported_at": "2022-05-12T02:25:22.491252+00:00",
+    "features": {
+      "disable_bulk_writes": false,
+      "poll_db_no_merge": true,
+      "poll_external_ids": false,
+      "rest_count_only": false,
+      "ucs_basic_collation_index": true
+    },
+    "api_version": "52.0",
+    "name": "",
+    "logplex_log_enabled": false
+  },
+  "version": 1
+}

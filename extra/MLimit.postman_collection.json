@@ -1,0 +1,53 @@
+{
+	"info": {
+		"_postman_id": "5a25391d-a9dd-4eb3-8609-53bc21441db8",
+		"name": "MLimit",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Configs",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Fields",
+						"value": "00D5w000003xhN2",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "basic",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"status\": true,\n    \"name\": \"restapi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/api/configs/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"configs",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
