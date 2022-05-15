@@ -2,6 +2,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 ''' init file '''
+import traceback
 from src.config.logger import LoggerClass
 import src.config as config
 from worker import conn
@@ -65,6 +66,7 @@ if __name__ == '__main__':
                                     'train_only': train_only
                                 })
             except Exception as e:
+                traceback.print_exc()
                 logging.logger.error(e)
                 raise
         else:

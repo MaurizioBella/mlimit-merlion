@@ -2,6 +2,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 ''' predict governor limits per hour '''
+import traceback
 import warnings
 from src.config.error import ValueTooSmallError
 import src.utils.database as utils_db
@@ -59,6 +60,7 @@ def predict_hourly_limits(measure, train_only=False):
         except ValueTooSmallError as value_too_small:
             logging.logger.error(value_too_small)
         except Exception as e:
+            traceback.print_exc()
             logging.logger.error(e)
     else:
         logging.logger.debug('Nothing to predict')

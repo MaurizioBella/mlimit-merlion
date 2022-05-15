@@ -86,8 +86,6 @@ class Prediction:
 
         logging.logger.info(
             "Init Prediction class measure: %s", measure)
-        if len(self.df) < int(config.MERLION_LIMIT_EVENTS):
-            raise ValueTooSmallError()
 
     def _start_time(self):
         process_memory = process.memory_info().rss
@@ -277,6 +275,8 @@ class Prediction:
         self.__model_name = model_name
 
     def preprocessing(self, df, ds, y, freq):
+        if len(df) < int(config.MERLION_LIMIT_EVENTS):
+            raise ValueTooSmallError()
         val = (df, ds, y, freq)
         self.df_preprocessed = val
 
