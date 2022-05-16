@@ -119,7 +119,7 @@ rq info --interval 0.5 # monitoring the Redis queue
 - RETRY_DATA_FROM_SF        : ```True``` or ```False``` to retry data from the Salesforce Org or not
 - AWS_S3_ENABLE             : ```True``` or ```False``` to save the models in AWS S3
 - AWS_S3_BUCKET_NAME        : the bucket name (configure AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY)
-
+- WEBHOOK_URL               : add the webhook URL. Events with Logging.ERROR are sent to that endpoint
 <!-- <img src="docs/mlimit_deploy_new_app.gif" width=75% height=75% > -->
 
 ### Main Entities
