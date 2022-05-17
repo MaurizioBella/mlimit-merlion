@@ -70,4 +70,4 @@ if __name__ == '__main__':
                 logging.logger.error(e)
                 raise
         else:
-            logging.logger.error('WORKER_TYPE %s', config.WORKER_TYPE)
+            logging.logger.error('Worker Type not supported %s', config.WORKER_TYPE)
