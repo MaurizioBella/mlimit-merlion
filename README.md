@@ -109,7 +109,7 @@ rq info --interval 0.5 # monitoring the Redis queue
 - MERLION_PLOT_SHOW (```True``` or ```False``` to see the plot - it works only locally)
 - MERLION_MAX_FORECAST_STEPS (default ```100``` - forecasting units based on the frequency e.g., 100 hours)
 - MERLION_TRAINING_SAMPLE (defaul ```90``` - It uses 90% of the DataFrame as training data and the 10% as testing data
-- MERLION_PREDICT_MODEL (recommended leave this empty) Specify a number from 1 to 5 if you want to use a specific model; otherwise, Merlion will use the one with sMAPE lower. You can see the model selected in the column model_name__c in table measureconfig__c
+- MERLION_PREDICT_MODEL Specify the model ```ensemble``` or ```selector```
 - MERLION_LIMIT_EVENTS (default 12 - history of minimum data to start forecasting)
 #### Other configurations
  

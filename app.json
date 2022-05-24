@@ -118,8 +118,8 @@
       "required": false
     },
     "MERLION_PREDICT_MODEL": {
-      "description": "Merlion Model used to forecasting",
-      "value": "1",
+      "description": "Merlion Model used to forecasting, selector or ensemble",
+      "value": "selector",
       "required": false
     },    
     "RETRY_DATA_FROM_SF": {

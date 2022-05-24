@@ -37,7 +37,7 @@ def predict_hourly_limits(measure, train_only=False):
                 freq='H')
             if (train_only == True):
                 # Train the model
-                prediction.fit()
+                prediction.train()
                 # Update the Measure Config with some attributes such as sMAPE and RMSE
                 utils_db.update_measure_config(prediction)
             else:
