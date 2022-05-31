@@ -58,7 +58,9 @@ def predict_hourly_limits(measure, train_only=False):
                         measure, df=prediction.df_anomalies)
 
         except ValueTooSmallError as value_too_small:
-            logging.logger.error(value_too_small)
+            logging.logger.warning(value_too_small)
+        except FileNotFoundError as filenotfound:
+            logging.logger.warning(filenotfound)
         except Exception as e:
             traceback.print_exc()
             logging.logger.error(e)
