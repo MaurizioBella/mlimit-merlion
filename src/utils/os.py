@@ -24,7 +24,7 @@ def clean_directory(dir_path):
         shutil.rmtree(dir_path)
         logging.logger.debug("Deleted local folder %s" % (dir_path))
     except OSError as e:
-        logging.logger.warning("Error: %s : %s" % (dir_path, e.strerror))
+        logging.logger.warning("OSError: %s : %s" % (dir_path, e.strerror))
     if (config.AWS_S3_ENABLE == 'True'):
         fs = s3fs.S3FileSystem(
             key=config.AWS_S3_ACCESS_KEY_ID,

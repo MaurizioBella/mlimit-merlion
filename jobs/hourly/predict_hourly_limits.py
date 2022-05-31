@@ -37,7 +37,7 @@ def predict_hourly_limits(measure, train_only=False):
                 freq='H')
             if (train_only == True):
                 # Train the model
-                prediction.fit()
+                prediction.train()
                 # Update the Measure Config with some attributes such as sMAPE and RMSE
                 utils_db.update_measure_config(prediction)
             else:
@@ -58,7 +58,9 @@ def predict_hourly_limits(measure, train_only=False):
                         measure, df=prediction.df_anomalies)
 
         except ValueTooSmallError as value_too_small:
-            logging.logger.error(value_too_small)
+            logging.logger.warning(value_too_small)
+        except FileNotFoundError as filenotfound:
+            logging.logger.warning(filenotfound)
         except Exception as e:
             traceback.print_exc()
             logging.logger.error(e)

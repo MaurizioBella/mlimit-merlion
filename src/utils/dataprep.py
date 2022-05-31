@@ -57,8 +57,12 @@ def preprocessing(
         n = int(config.MERLION_TRAINING_SAMPLE)
         train = df.head(int(len(df)*(n/100)))
         test = df.tail(int(len(df)*((100-n)/100)))
-        train_data = TimeSeries.from_pd(train)
-        test_data = TimeSeries.from_pd(test)
+        df_ts = TimeSeries.from_pd(df, freq='H')
+        df_head = test.head(1)
+        df_head.reset_index(inplace=True)
+        train_data,test_data = df_ts.bisect(df_head.ds[0])
+        # train_data = TimeSeries.from_pd(train)
+        # test_data = TimeSeries.from_pd(test)
         return df, df_data, train_data, test_data
 
     else:

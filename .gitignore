@@ -61,5 +61,6 @@ tmp/*
 logs.log
 temp.py
 .ipynb_checkpoints/*
-models/model_*
+models/ensemble/*
+models/selector/*
 .DS_Store

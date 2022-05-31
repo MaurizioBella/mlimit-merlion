@@ -37,7 +37,7 @@ def create_evaluator(model):
     # -- when we re-train the model, retrain it on only the past 2 weeks of data
     evaluator = ForecastEvaluator(
         model=model, config=ForecastEvaluatorConfig(
-            cadence="1h", horizon="6h", retrain_freq="12h", train_window="14d")
+            cadence="1h", horizon="6h", retrain_freq="12h")
     )
     return evaluator
 
@@ -89,13 +89,13 @@ class Prediction:
 
     def _start_time(self):
         process_memory = process.memory_info().rss
-        logging.logger.info("Memory used in GB before fit: %0.2f" %
+        logging.logger.info("Memory used in GB before train: %0.2f" %
                             float(process_memory/(10**9)))  # Check memory usage before loading the model
         time_local = time.localtime()
         current_time = time.strftime("%H:%M:%S", time_local)
         self.start_time = time.time()
         self.process_memory = process_memory
-        logging.logger.info('Fit process starts at %s', current_time)
+        logging.logger.info('Training process starts at %s', current_time)
 
     def _end_time(self):
         end_time = round(time.time() - self.start_time, 2)
@@ -105,7 +105,7 @@ class Prediction:
         logging.logger.debug("Percentage increase in memory usage: {:.2f}% -\
              total memory available {:.2f}".format(
             float((post/self.process_memory)*100), ttl))  # Percentage increase in memory after loading the model
-        logging.logger.debug("Memory used in GB after fit the model: {:.2f}".format(
+        logging.logger.debug("Memory used in GB after training the model: {:.2f}".format(
             float(post/(10**9))))  # Calculate the memory used after loading the model
 
     
@@ -334,8 +334,8 @@ class Prediction:
         self.df = df
         self.__df_data = df_data
 
-    def fit(self):
-        """ fit the model
+    def train(self):
+        """ Training the model
         Parameters
         -----------
         holiday: Will check on public.prophetholiday if True
@@ -344,7 +344,7 @@ class Prediction:
         -------
         self
         """
-        logging.logger.debug('Fitting the model with %s records',
+        logging.logger.debug('Training the model with %s records',
                              len(self.df))
         if self.df is not None:
             logging.logger.debug('df head(3) \n %s', self.df.head(3).T)
@@ -361,9 +361,10 @@ class Prediction:
             # model_path = lowest_smape[0].get('model_path')
             # model_name = lowest_smape[0].get('model_name')
 
-            path = os.path.join("models", self.model_path, self.measure)
+            model_path, model_name = self.selector
+            path = os.path.join("models", model_path, self.measure)
             selector_factory_loaded = ModelFactory.load(
-                name=self.model_name, model_path=path)
+                name=model_name, model_path=path)
             selector_evaluator = create_evaluator(selector_factory_loaded)
             self.last_train_time = selector_factory_loaded._last_train_time
             selector_train_result, selector_test_result = selector_evaluator.get_predict(
@@ -378,7 +379,7 @@ class Prediction:
                 predict=selector_test_result,
                 metric=ForecastMetric.RMSE)
             logging.logger.debug("Evaluation pipeline for model: {0} sMAPE: {1:.3f} RMSE: {2:.3f} last training time {3} path {4}".format(
-                self.model_name, self.smape, self.rmse, self.last_train_time, self.model_path))
+                model_name, self.smape, self.rmse, self.last_train_time, model_path))
 
             # return smape, rmse, last_train_time, model_name, model_path
 
@@ -427,7 +428,7 @@ class Prediction:
         # return self.forecast, self.forecast_lb, self.forecast_ub, self.df
 
     def detect_anomalies(self):
-        """ fit the model
+        """ Detect anomalies
         Parameters
         ----------
         df: Pandas DataFrame

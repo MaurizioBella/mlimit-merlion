@@ -25,9 +25,9 @@ engine = create_engine(
 )
 
 
-def get_measure_config_by_limitname(prediction):
-    return Session.query(MeasureConfig).filter(
-        MeasureConfig.sfid == prediction.measure).all()
+# def get_measure_config_by_limitname(prediction):
+#     return Session.query(MeasureConfig).filter(
+#         MeasureConfig.sfid == prediction.measure).all()
 
 
 def add_sfdc_auth_config(**kwargs):
