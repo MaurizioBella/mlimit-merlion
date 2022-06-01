@@ -58,19 +58,9 @@ class Prediction:
             y_max_value):
 
         self.__start_time = time.time()
-        # self.measure = measure
-
-        # Any valid frequency for pd.date_range, such as 'D' or 'M'.
-
         self.__test_data = None
         self.__train_data = None
-        # self.freq = None
-        # self.holiday = None  # Prophet holiday
-        # self.model = None  # Prophet model
-        # self.lowest_smape = None  # Dictionary with lowest sMAPE value
         self.__df = None  # Pandas Dataframes
-        # self.mape = None  # MAPE measure of prediction accuracy of a forecasting
-
         self.__df_data = None
         self.__process_memory = None  # memory info
         self.__y_max_value = y_max_value
@@ -107,9 +97,6 @@ class Prediction:
             float((post/self.process_memory)*100), ttl))  # Percentage increase in memory after loading the model
         logging.logger.debug("Memory used in GB after training the model: {:.2f}".format(
             float(post/(10**9))))  # Calculate the memory used after loading the model
-
-    
-    
     
     # forecast_ub
     @property
@@ -351,15 +338,9 @@ class Prediction:
             logging.logger.debug('df tail(3) \n %s', self.df.tail(3).T)
             logging.logger.debug('df info() \n %s', self.df.info())
             self._start_time()
-            # self.holiday = holiday
-
-            # Dictionary with lowest sMAPE value
-            # lowest_smape = save(self.train_data, self.test_data, self.measure)
+            
             val = self.train_data, self.test_data, self.measure
             self.selector = val
-
-            # model_path = lowest_smape[0].get('model_path')
-            # model_name = lowest_smape[0].get('model_name')
 
             model_path, model_name = self.selector
             path = os.path.join("models", model_path, self.measure)
@@ -381,8 +362,6 @@ class Prediction:
             logging.logger.debug("Evaluation pipeline for model: {0} sMAPE: {1:.3f} RMSE: {2:.3f} last training time {3} path {4}".format(
                 model_name, self.smape, self.rmse, self.last_train_time, model_path))
 
-            # return smape, rmse, last_train_time, model_name, model_path
-
     def predict(self):
         """ output of the Prophet algorithm after it has been trained and applied to new
         data when forecasting the likelihood of a particular outcome
@@ -399,19 +378,15 @@ class Prediction:
 
         result = self.selector
         path = os.path.join("models", self.model_path, self.measure)
-        isdir = os.path.isdir(path)
-        if not isdir:
+        is_dir = os.path.isdir(path)
+        if not is_dir:
             utils_os.read_from_s3(path)
-        isdir = os.path.isdir(path)
-        if not isdir:
+        is_dir = os.path.isdir(path)
+        if not is_dir:
             raise Exception('there is no folder %s retrain the model' % (path))
-        # path = os.path.join("models", "model_prophet", self.measure)
-        # path = os.path.join("models", "model_selector", self.measure)
         # Load the selector using the ModelFactory
         logging.logger.debug('load predict model from %s', path)
 
-        # selector_factory_loaded = ModelFactory.load(
-        #     name="ForecasterEnsemble", model_path=path)
         selector_factory_loaded = ModelFactory.load(
             name=self.model_name, model_path=path)
 
@@ -422,10 +397,6 @@ class Prediction:
             return_iqr=True,
             return_prev=True
         )
-
-        # forecast, forecast_lb, forecast_ub = predict_model(
-        #     self.df_preprocessed, self.measure)
-        # return self.forecast, self.forecast_lb, self.forecast_ub, self.df
 
     def detect_anomalies(self):
         """ Detect anomalies
