@@ -59,8 +59,12 @@ def predict_hourly_limits(measure, train_only=False):
 
         except ValueTooSmallError as value_too_small:
             logging.logger.warning(value_too_small)
-        except FileNotFoundError as filenotfound:
-            logging.logger.warning(filenotfound)
+        except ValueError as value_error:
+            traceback.print_exc()
+            logging.logger.critical(value_error)
+        except FileNotFoundError as file_not_found:
+            traceback.print_exc()
+            logging.logger.warning(file_not_found)
         except Exception as e:
             traceback.print_exc()
             logging.logger.error(e)

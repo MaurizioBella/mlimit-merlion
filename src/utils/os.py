@@ -65,5 +65,6 @@ def read_from_s3(path):
             fs = s3fs.S3FileSystem(
                 key=config.AWS_S3_ACCESS_KEY_ID,
                 secret=config.AWS_S3_SECRET_ACCESS_KEY)
+            check_exists = fs.exists(config.AWS_S3_BUCKET_NAME+path)
             fs.download(config.AWS_S3_BUCKET_NAME+path, path, recursive=True)
-        logging.logger.debug('Downloaded folder from S3 %s' % (path))
+            logging.logger.debug('Downloaded folder from S3 %s and it exists: ' % (path,check_exists))
