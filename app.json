@@ -102,11 +102,6 @@
       "value": "24",
       "required": false
     },
-    "MERLION_MAX_FORECAST_STEPS": {
-      "description": "forecasting units based on the frequency e.g., 100 hours",
-      "value": "100",
-      "required": false
-    },
     "MERLION_TRAINING_SAMPLE": {
       "description": "It uses 90% of the DataFrame as training data and the 10% as testing data",
       "value": "90",

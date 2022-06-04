@@ -391,7 +391,7 @@ class Prediction:
             name=self.model_name, model_path=path)
         self.forecast, self.forecast_lb, self.forecast_ub = selector_factory_loaded.forecast(
             time_stamps=[max(self.df_preprocessed)[
-                0] + x * 60 * 60 for x in range(len(self.test_data))],
+                0] + x * 60 * 60 for x in range(len(self.test_data)-1)],
             time_series_prev=self.df_preprocessed,
             return_iqr=True,
             return_prev=True
