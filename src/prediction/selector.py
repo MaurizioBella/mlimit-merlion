@@ -75,6 +75,25 @@ class Selector:
 
     def __set__(self, prediction, val):
         train_data, test_data, measure = val
+        
+        print('----------------------------------------------------------------')
+        print(train_data)
+        print(type(train_data))
+        print('len(train_data) %s',len(train_data))
+        print('----------------------------------------------------------------')
+        print(test_data)
+        print(type(test_data))
+        print('len(test_data) %s',len(test_data))
+        print('----------------------------------------------------------------')
+        # Obtain the time stamps corresponding to the test data
+        sub_test_data = test_data[:len(test_data)-1]
+        # Obtain the time stamps corresponding to the test data
+        time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
+        print(time_stamps)
+        print('len(time_stamps) %s',len(time_stamps))
+        print('----------------------------------------------------------------')
+        
+        
         lowest_smape_list = []
         # model_arima, model_prophet, model_mses, model_ensemble, model_selector = model_evaluation(test_data)
         ensemble, selector = model_evaluation(test_data)
@@ -87,9 +106,7 @@ class Selector:
                             (type(selector).__name__))
         forecast_s, stderr_s = selector.train(train_data)
 
-        # Obtain the time stamps corresponding to the test data
-        time_stamps = test_data.time_stamps
-        sub_test_data = test_data
+        
         
         # The same options are available for ensembles as well, though the stderr is None
         forecast_e, stderr_e = ensemble.forecast(time_stamps=time_stamps)
