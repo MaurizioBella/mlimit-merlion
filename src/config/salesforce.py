@@ -39,7 +39,8 @@ class SalesforceConnection:
         req = requests.post(url_service)
         response = json.loads(req.text)
         # Clean up the session token based on the Organization ID
-        utils_db.delete_sfdc_auth_config()
+        INSTANCE_URL = f'https://{config.SFDC_MYDOMAIN}'
+        utils_db.delete_sfdc_auth_config(INSTANCE_URL)
 
         # Create new Salesforce Authentication
         utils_db.add_sfdc_auth_config(
