@@ -39,7 +39,6 @@ def preprocessing(
         if timedeltas.size != 0:
             logging.logger.warning('Has missing data: %s',
                                 any(timedeltas != timedeltas[0]))
-        # print(f"Has missing data: {any(timedeltas != timedeltas[0])}")
         df = df.resample(freq).sum()
         column_0 = df['y']
         count_0 = column_0[column_0 == 0].count()
