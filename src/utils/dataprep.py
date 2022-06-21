@@ -50,8 +50,9 @@ def preprocessing(
         # df.reset_index(inplace=True)
         df_data = TimeSeries.from_pd(df)
         # select the first 90% of data to train
+        training_sample = float(config.MERLION_TRAINING_SAMPLE)
         # loc = int(int(config.MERLION_TRAINING_SAMPLE) * len(df))
-        loc = int(0.9 * len(df))
+        loc = int(training_sample * len(df))
         train = df[:loc]
         test = df[loc:]
         train_data = TimeSeries.from_pd(train)
