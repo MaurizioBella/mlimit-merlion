@@ -2,23 +2,21 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
-from pyexpat import model
 import warnings
 from merlion.models.ensemble.combine import Mean, ModelSelector
 from merlion.models.ensemble.forecast import ForecasterEnsemble, ForecasterEnsembleConfig
-from merlion.transform.resample import TemporalResample
 from merlion.transform.base import Identity
-from merlion.models.forecast.smoother import MSES, MSESConfig
-from merlion.models.forecast.prophet import Prophet, ProphetConfig
-from merlion.models.forecast.arima import Arima, ArimaConfig
-from merlion.models.forecast.ets import ETS, ETSConfig
-from merlion.models.forecast.trees import LGBMForecaster, LGBMForecasterConfig
+# from merlion.transform.resample import TemporalResample
+# from merlion.models.forecast.smoother import MSES, MSESConfig
+# from merlion.models.forecast.prophet import Prophet, ProphetConfig
+# from merlion.models.forecast.arima import Arima, ArimaConfig
+# from merlion.models.forecast.ets import ETS, ETSConfig
+# from merlion.models.forecast.trees import LGBMForecaster, LGBMForecasterConfig
 from merlion.models.automl.autosarima import AutoSarima, AutoSarimaConfig
 from merlion.models.automl.autoets import AutoETS, AutoETSConfig
 from merlion.models.automl.autoprophet import AutoProphet, AutoProphetConfig
 import matplotlib.pyplot as plt
 import src.utils.os as utils_os
-import src.utils.database as utils_db
 import matplotlib.pyplot as plt
 from merlion.evaluate.forecast import ForecastMetric
 import os
@@ -102,8 +100,6 @@ class Selector:
         # Obtain the time stamps corresponding to the test data
         time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
         
-        lowest_smape_list = []
-        # model_arima, model_prophet, model_mses, model_ensemble, model_selector = model_evaluation(test_data)
         ensemble, selector = model_evaluation(test_data)
         
         logging.logger.info("Training %s ..." %
@@ -122,15 +118,10 @@ class Selector:
             time_stamps=time_stamps, time_series_prev=train_data)
 
         # Compute the sMAPE of the ensemble's forecast (scale is 0 to 100)
-        smape_e = ForecastMetric.sMAPE.value(sub_test_data, forecast_e)
-        lowest_smape_list.append({
-            'model_name': type(ensemble).__name__,
-            'model_path': 'ensemble',
-            'sMAPE': smape_e
-        })
+        smape_e = ForecastMetric.sMAPE.value(sub_test_data, forecast_e)        
         logging.logger.info("Model {0} sMAPE is {1:.3f}".format(
             type(ensemble).__name__, smape_e))
-        # print(f"Ensemble sMAPE is {smape_e:.3f}")
+        
         path = os.path.join("models", "ensemble", measure)
         utils_os.clean_directory(path)
         ensemble.save(path)
@@ -144,15 +135,9 @@ class Selector:
 
         # Compute the sMAPE of the selector's forecast (scale is 0 to 100)
         smape_s = ForecastMetric.sMAPE.value(sub_test_data, forecast_s)
-        lowest_smape_list.append({
-            'model_name': type(selector).__name__,
-            'model_path': 'selector',
-            'sMAPE': smape_s
-        })
         logging.logger.info("Model {0} sMAPE is {1:.3f}".format(
             type(selector).__name__, smape_s))
-        # print(f"Selector sMAPE is {smape_s:.3f}")
-
+        
         # Save the selector
         path = os.path.join("models", "selector", measure)
         utils_os.clean_directory(path)
@@ -171,7 +156,6 @@ class Selector:
     def __get__(self, prediction, objtype=None):
         ''' identify which model to use for prediction return path and model name
         factory names here https://github.com/salesforce/Merlion/blob/7af892c57401ebd1883febcba2de5d8d5422cb56/merlion/models/factory.py#L1'''
-        # objtype = <class 'src.prediction.forecaster_merlion.Prediction'>
         predict = config.MERLION_PREDICT_MODEL
         model_path = None
         model_name = None

@@ -3,7 +3,7 @@
 # LICENSE file in the root directory of this source tree.
 """class in charge of forecasting"""
 from merlion.evaluate.forecast import ForecastEvaluator, ForecastEvaluatorConfig, ForecastMetric
-from merlion.models.ensemble.forecast import ForecasterEnsemble, ForecasterEnsembleConfig
+from merlion.models.ensemble.forecast import ForecasterEnsemble
 from src.config.logger import LoggerClass
 from src.config.error import ValueTooSmallError
 import src.utils.dataprep as dataprep
@@ -14,9 +14,8 @@ from psutil import virtual_memory
 import psutil
 import time
 from dotenv import load_dotenv
-from merlion.models.factory import ModelFactory
+# from merlion.models.factory import ModelFactory
 import os
-from merlion.evaluate.forecast import ForecastMetric
 import warnings
 import pandas as pd
 load_dotenv()
