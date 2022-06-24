@@ -96,7 +96,8 @@ class Selector:
         train_data, test_data, measure = val
         
         # Obtain the time stamps corresponding to the test data
-        sub_test_data = test_data[:len(test_data)-1]
+        # sub_test_data = test_data[:len(test_data)-1]
+        sub_test_data = test_data[:-1]
         # Obtain the time stamps corresponding to the test data
         time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
         
@@ -126,7 +127,7 @@ class Selector:
         utils_os.clean_directory(path)
         ensemble.save(path)
         # Visualize the forecast.
-        fig, ax = ensemble.plot_forecast(time_series=test_data,
+        fig, ax = ensemble.plot_forecast(time_series=sub_test_data,
                                                plot_time_series_prev=True)
         plt.savefig(path+'/graph_training.png')
         utils_os.save_to_s3(path)
@@ -143,7 +144,7 @@ class Selector:
         utils_os.clean_directory(path)
         selector.save(path)
         # Visualize the forecast.
-        fig, ax = selector.plot_forecast(time_series=test_data,
+        fig, ax = selector.plot_forecast(time_series=sub_test_data,
                                             time_series_prev=train_data,
                                             plot_time_series_prev=True,
                                             plot_forecast_uncertainty=True)

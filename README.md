@@ -110,6 +110,7 @@ rq info --interval 0.5 # monitoring the Redis queue
 - MERLION_TRAINING_SAMPLE (defaul ```90``` - It uses 90% of the DataFrame as training data and the 10% as testing data
 - MERLION_PREDICT_MODEL Specify the model ```ensemble``` or ```selector```
 - MERLION_LIMIT_EVENTS (default 12 - history of minimum data to start forecasting)
+- MERLION_MAX_FORECAST_STEPS (default 100 - maximum number of forecast steps)
 #### Other configurations
  
 - DATABASE_HEROKU_CONNECT   : ```True``` if you want to use it with Heroku Connect (False for local project)
