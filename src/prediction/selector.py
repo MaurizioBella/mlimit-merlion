@@ -2,6 +2,7 @@
 # This source code is licensed under the MIT license found in the
 # LICENSE file in the root directory of this source tree.
 
+from pyexpat import model
 import warnings
 from merlion.models.ensemble.combine import Mean, ModelSelector
 from merlion.models.ensemble.forecast import ForecasterEnsemble, ForecasterEnsembleConfig
@@ -10,8 +11,11 @@ from merlion.transform.base import Identity
 from merlion.models.forecast.smoother import MSES, MSESConfig
 from merlion.models.forecast.prophet import Prophet, ProphetConfig
 from merlion.models.forecast.arima import Arima, ArimaConfig
+from merlion.models.forecast.ets import ETS, ETSConfig
 from merlion.models.forecast.trees import LGBMForecaster, LGBMForecasterConfig
 from merlion.models.automl.autosarima import AutoSarima, AutoSarimaConfig
+from merlion.models.automl.autoets import AutoETS, AutoETSConfig
+from merlion.models.automl.autoprophet import AutoProphet, AutoProphetConfig
 import matplotlib.pyplot as plt
 import src.utils.os as utils_os
 import src.utils.database as utils_db
@@ -26,33 +30,50 @@ warnings.filterwarnings("ignore")
 
 def model_evaluation(test_data):
     """ Util method to return the configuration for each Model
-        It uses three different forecasting models:
-            ARIMA (a classic stochastic process model)
-            Prophet (Facebook's popular time series forecasting model)
-            MSES (the Multi-Scale Exponential Smoothing model, developed in-house)
-            AutoSARIMA (Train a full AutoSarima model with approximation)
+        It uses different forecasting models:
+            # ARIMA (a classic stochastic process model)
+            # Prophet (Facebook's popular time series forecasting model)
+            # MSES (the Multi-Scale Exponential Smoothing model, developed in-house)
+            # AutoSARIMA (Train a full AutoSarima model with approximation)
+            AutoProphet (Automatic (multi)-seasonality detection for Facebook's Prophet)
+            AutoETP (Automatic seasonality detection for ETS.)
 
     Returns:
         ensemble, selector: return the 3 models plus ensemble and the selector
     """
-    config_arima = ArimaConfig(max_forecast_steps=len(test_data), order=(20, 1, 5),
-                          transform=TemporalResample(granularity="1h"))
-    model_arima = Arima(config_arima)
+    models = []
+    # config_arima = ArimaConfig(max_forecast_steps=len(test_data), order=(20, 1, 5),
+    #                       transform=TemporalResample(granularity="1h"))
+    # model_arima = Arima(config_arima)
+    # models.append(model_arima)
     
-    config_prophet = ProphetConfig(max_forecast_steps=None, transform=Identity())
-    model_prophet = Prophet(config_prophet)
+    # config_prophet = ProphetConfig(max_forecast_steps=None, transform=Identity())
+    # model_prophet = Prophet(config_prophet)
+    # models.append(model_prophet)
     
-    config_mses = MSESConfig(max_forecast_steps=len(test_data), max_backstep=60,
-                         transform=TemporalResample(granularity="1h"))
-    model_mses = MSES(config_mses)
+    # config_mses = MSESConfig(max_forecast_steps=len(test_data), max_backstep=60,
+    #                      transform=TemporalResample(granularity="1h"))
+    # model_mses = MSES(config_mses)
+    # models.append(model_mses)
     
-    config_sarima = AutoSarimaConfig(auto_pqPQ=True, auto_d=True, auto_D=True, auto_seasonality=True,
-                            approximation=True, maxiter=5)
-    model_sarima = AutoSarima(config_sarima)
+    # config_sarima = AutoSarimaConfig(auto_pqPQ=True, auto_d=True, auto_D=True, auto_seasonality=True,
+    #                         approximation=True, maxiter=5)
+    # model_sarima = AutoSarima(config_sarima)
+    # models.append(model_sarima)
+    
+    # AutoProphet (Automatic (multi)-seasonality detection for Facebook's Prophet)
+    config_autoprophet = AutoProphetConfig(target_seq_index=0, transform=Identity(), periodicity_strategy="Max")
+    model_autoprophet = AutoProphet(config=config_autoprophet)
+    models.append(model_autoprophet)
+    
+    # AutoETP (Automatic seasonality detection for ETS.)
+    config_autoets = AutoETSConfig(pval=0.1, error="add", trend="add", seasonal="add", damped_trend=True)
+    model_autoets = AutoETS(config=config_autoets)    
+    models.append(model_autoets)
     
     # The combiner here will simply take the mean prediction of the ensembles here
     ensemble_config = ForecasterEnsembleConfig(
-        combiner=Mean(), models=[model_arima, model_prophet, model_mses, model_sarima])
+        combiner=Mean(), models=models)
     
     ensemble = ForecasterEnsemble(config=ensemble_config)
     
@@ -60,7 +81,7 @@ def model_evaluation(test_data):
     selector_config = ForecasterEnsembleConfig(
         combiner=ModelSelector(metric=ForecastMetric.sMAPE))
     selector = ForecasterEnsemble(
-        config=selector_config, models=[model_arima, model_prophet, model_mses,model_sarima])
+        config=selector_config, models=models)
     
     return ensemble, selector
 
