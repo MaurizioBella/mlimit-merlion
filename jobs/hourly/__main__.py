@@ -58,9 +58,9 @@ if __name__ == '__main__':
             try:
                 dar = q.enqueue(predict_hourly_limits,
                                 # depends_on=gl,
-                                ttl=3600,
-                                failure_ttl=3600,
-                                job_timeout=3600,
+                                ttl='6h',
+                                failure_ttl='5d',
+                                job_timeout='2h',
                                 kwargs={
                                     'measure': variate[0],
                                     'train_only': train_only
