@@ -96,8 +96,8 @@ class Selector:
         train_data, test_data, measure = val
         
         # Obtain the time stamps corresponding to the test data
-        # sub_test_data = test_data[:len(test_data)-1]
-        sub_test_data = test_data[:-1]
+        sub_test_data = test_data[:len(test_data)-1]
+        # sub_test_data = test_data[:-1]
         # Obtain the time stamps corresponding to the test data
         time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
         
