@@ -6,12 +6,12 @@ import warnings
 from merlion.models.ensemble.combine import Mean, ModelSelector
 from merlion.models.ensemble.forecast import ForecasterEnsemble, ForecasterEnsembleConfig
 from merlion.transform.base import Identity
-# from merlion.transform.resample import TemporalResample
-# from merlion.models.forecast.smoother import MSES, MSESConfig
-# from merlion.models.forecast.prophet import Prophet, ProphetConfig
-# from merlion.models.forecast.arima import Arima, ArimaConfig
-# from merlion.models.forecast.ets import ETS, ETSConfig
-# from merlion.models.forecast.trees import LGBMForecaster, LGBMForecasterConfig
+from merlion.transform.resample import TemporalResample
+from merlion.models.forecast.smoother import MSES, MSESConfig
+from merlion.models.forecast.prophet import Prophet, ProphetConfig
+from merlion.models.forecast.arima import Arima, ArimaConfig
+from merlion.models.forecast.ets import ETS, ETSConfig
+from merlion.models.forecast.trees import LGBMForecaster, LGBMForecasterConfig
 from merlion.models.automl.autosarima import AutoSarima, AutoSarimaConfig
 from merlion.models.automl.autoets import AutoETS, AutoETSConfig
 from merlion.models.automl.autoprophet import AutoProphet, AutoProphetConfig
@@ -65,9 +65,9 @@ def model_evaluation(test_data):
     models.append(model_autoprophet)
     
     # AutoETP (Automatic seasonality detection for ETS.)
-    config_autoets = AutoETSConfig(pval=0.1, error="add", trend="add", seasonal="add", damped_trend=True)
-    model_autoets = AutoETS(config=config_autoets)    
-    models.append(model_autoets)
+    # config_autoets = AutoETSConfig(pval=0.1, error="add", trend="add", seasonal="add", damped_trend=True)
+    # model_autoets = AutoETS(config=config_autoets)    
+    # models.append(model_autoets)
     
     # The combiner here will simply take the mean prediction of the ensembles here
     ensemble_config = ForecasterEnsembleConfig(

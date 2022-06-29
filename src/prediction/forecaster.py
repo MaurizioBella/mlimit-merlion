@@ -397,9 +397,10 @@ class Prediction:
         sub_test_data = self.test_data[:len(self.test_data)-1]
 
         # Obtain the time stamps corresponding to the test data
-        # time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
-        time_stamps = [max(self.df_preprocessed)[
-                0] + x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        sub_test_data_time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
+        time_stamps = [max(sub_test_data_time_stamps)+ x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        # time_stamps = [max(self.df_preprocessed)[
+        #         0] + x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
         logging.logger.debug('time stamps: %s', time_stamps)
         self.forecast, self.forecast_lb, self.forecast_ub = selector_factory_loaded.forecast(
             time_stamps=time_stamps,
