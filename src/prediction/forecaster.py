@@ -3,6 +3,7 @@
 # LICENSE file in the root directory of this source tree.
 """class in charge of forecasting"""
 from merlion.evaluate.forecast import ForecastEvaluator, ForecastEvaluatorConfig, ForecastMetric
+from merlion.models.ensemble.forecast import ForecasterEnsemble
 from src.config.logger import LoggerClass
 from src.config.error import ValueTooSmallError
 import src.utils.dataprep as dataprep
@@ -13,9 +14,8 @@ from psutil import virtual_memory
 import psutil
 import time
 from dotenv import load_dotenv
-from merlion.models.factory import ModelFactory
+# from merlion.models.factory import ModelFactory
 import os
-from merlion.evaluate.forecast import ForecastMetric
 import warnings
 import pandas as pd
 load_dotenv()
@@ -344,8 +344,10 @@ class Prediction:
 
             model_path, model_name = self.selector
             path = os.path.join("models", model_path, self.measure)
-            selector_factory_loaded = ModelFactory.load(
-                name=model_name, model_path=path)
+            selector_factory_loaded = ForecasterEnsemble.load(
+                dirname=path)
+            # selector_factory_loaded = ModelFactory.load(
+            #     name=model_name, model_path=path)
             selector_evaluator = create_evaluator(selector_factory_loaded)
             self.last_train_time = selector_factory_loaded._last_train_time
             selector_train_result, selector_test_result = selector_evaluator.get_predict(
@@ -387,12 +389,22 @@ class Prediction:
         # Load the selector using the ModelFactory
         logging.logger.debug('load predict model from %s', path)
 
-        selector_factory_loaded = ModelFactory.load(
-            name=self.model_name, model_path=path)
+        selector_factory_loaded = ForecasterEnsemble.load(
+                dirname=path)
+        # selector_factory_loaded = ModelFactory.load(
+        #     name=model_name, model_path=path)
+        
+        sub_test_data = self.test_data[:len(self.test_data)-1]
+
+        # Obtain the time stamps corresponding to the test data
+        sub_test_data_time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
+        time_stamps = [max(sub_test_data_time_stamps)+ x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        # time_stamps = [max(self.df_preprocessed)[
+        #         0] + x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        logging.logger.debug('time stamps: %s', time_stamps)
         self.forecast, self.forecast_lb, self.forecast_ub = selector_factory_loaded.forecast(
-            time_stamps=[max(self.df_preprocessed)[
-                0] + x * 60 * 60 for x in range(len(self.test_data)-1)],
-            time_series_prev=self.df_preprocessed,
+            time_stamps=time_stamps,
+            time_series_prev=self.train_data,
             return_iqr=True,
             return_prev=True
         )

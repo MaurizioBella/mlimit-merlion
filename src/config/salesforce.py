@@ -39,7 +39,8 @@ class SalesforceConnection:
         req = requests.post(url_service)
         response = json.loads(req.text)
         # Clean up the session token based on the Organization ID
-        utils_db.delete_sfdc_auth_config()
+        INSTANCE_URL = f'https://{config.SFDC_MYDOMAIN}'
+        utils_db.delete_sfdc_auth_config(INSTANCE_URL)
 
         # Create new Salesforce Authentication
         utils_db.add_sfdc_auth_config(
@@ -89,7 +90,7 @@ class SalesforceConnection:
         except SalesforceExpiredSession as ses:
             # [{'message': 'Session expired or invalid', 'errorCode': 'INVALID_SESSION_ID'}]
             logging.logger.error(ses)
-            self.__set_refresh_token()
+            self.__set_refresh_token() # only set the new access_token without retrieving downloading the data
             raise
         except SalesforceResourceNotFound as srn:
             logging.logger.error(srn)

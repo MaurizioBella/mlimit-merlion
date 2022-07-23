@@ -39,7 +39,6 @@ def preprocessing(
         if timedeltas.size != 0:
             logging.logger.warning('Has missing data: %s',
                                 any(timedeltas != timedeltas[0]))
-        # print(f"Has missing data: {any(timedeltas != timedeltas[0])}")
         df = df.resample(freq).sum()
         column_0 = df['y']
         count_0 = column_0[column_0 == 0].count()
@@ -50,19 +49,14 @@ def preprocessing(
         df['y'].fillna(method='ffill', inplace=True)
         # df.reset_index(inplace=True)
         df_data = TimeSeries.from_pd(df)
-        # self.df_data = df_data
-        # self.df = df
-        # self.df = df_data
         # select the first 90% of data to train
-        n = int(config.MERLION_TRAINING_SAMPLE)
-        train = df.head(int(len(df)*(n/100)))
-        test = df.tail(int(len(df)*((100-n)/100)))
-        df_ts = TimeSeries.from_pd(df, freq='H')
-        df_head = test.head(1)
-        df_head.reset_index(inplace=True)
-        train_data,test_data = df_ts.bisect(df_head.ds[0])
-        # train_data = TimeSeries.from_pd(train)
-        # test_data = TimeSeries.from_pd(test)
+        training_sample = float(config.MERLION_TRAINING_SAMPLE)
+        # loc = int(int(config.MERLION_TRAINING_SAMPLE) * len(df))
+        loc = int(training_sample * len(df))
+        train = df[:loc]
+        test = df[loc:]
+        train_data = TimeSeries.from_pd(train)
+        test_data = TimeSeries.from_pd(test)
         return df, df_data, train_data, test_data
 
     else:

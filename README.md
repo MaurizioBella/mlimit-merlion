@@ -110,6 +110,7 @@ rq info --interval 0.5 # monitoring the Redis queue
 - MERLION_TRAINING_SAMPLE (defaul ```90``` - It uses 90% of the DataFrame as training data and the 10% as testing data
 - MERLION_PREDICT_MODEL Specify the model ```ensemble``` or ```selector```
 - MERLION_LIMIT_EVENTS (default 12 - history of minimum data to start forecasting)
+- MERLION_MAX_FORECAST_STEPS (default 100 - maximum number of forecast steps)
 #### Other configurations
  
 - DATABASE_HEROKU_CONNECT   : ```True``` if you want to use it with Heroku Connect (False for local project)
@@ -119,7 +120,6 @@ rq info --interval 0.5 # monitoring the Redis queue
 - AWS_S3_ENABLE             : ```True``` or ```False``` to save the models in AWS S3
 - AWS_S3_BUCKET_NAME        : the bucket name (configure AWS_S3_ACCESS_KEY_ID and AWS_S3_SECRET_ACCESS_KEY)
 - WEBHOOK_URL               : add the webhook URL. Events with Logging.ERROR are sent to that endpoint
-<!-- <img src="docs/mlimit_deploy_new_app.gif" width=75% height=75% > -->
 
 ### Main Entities
 - **Forecaster** (salesforce.forecaster__c) Contains a prediction for every historical value present in the dataset plus additional forecasts for the number of periods passed through the method
@@ -128,6 +128,7 @@ rq info --interval 0.5 # monitoring the Redis queue
 
 #### Extras
 - ```MLimit.postman_collection.json``` Postman collection. Header: set ```X-Fields``` as the OrgId and Authorization as ```"basic username:SECRET_KEY"``` Salesforce username:Heroku SECRET_KEY should be base64 encoded
+- Go to src.prediction.selector function ```model_evaluation``` If you want to change forecast models used by MLimit
 
 ## Changelog
 
