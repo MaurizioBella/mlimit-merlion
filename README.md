@@ -124,7 +124,8 @@ rq info --interval 0.5 # monitoring the Redis queue
 ### Main Entities
 - **Forecaster** (salesforce.forecaster__c) Contains a prediction for every historical value present in the dataset plus additional forecasts for the number of periods passed through the method
 - **Measure** (salesforce.measure__c) univariate time series consists of single (scalar) observations recorded sequentially over equal time increments. It is possible to train the model using the most recent historical data at a regular interval cadence as well as forecasting models up to a maximum number of steps we would like to forecast. 
-- **Measure Config** (salesforce.measureconfig__c) Governor limits enabled related to those measures. Only those measures with measure config flag active__c = true are taken into consideration for the forecasting
+- **Measure Config** (salesforce.measureconfig__c) Governor limits enabled related to those measures. Only those measures with measure config flag active__c = true are taken into consideration for the forecasting. You can add a new ``measure`` based on a count() soql. Following an example
+<img src="docs/add_new_measure_soql_count.png" width=75% height=75% >
 
 #### Extras
 - ```MLimit.postman_collection.json``` Postman collection. Header: set ```X-Fields``` as the OrgId and Authorization as ```"basic username:SECRET_KEY"``` Salesforce username:Heroku SECRET_KEY should be base64 encoded

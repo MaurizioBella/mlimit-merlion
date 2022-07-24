@@ -10,7 +10,7 @@ INSERT INTO salesforce.measureconfig__c ("name",max_value,frequency,"source",act
 	 ('DataStorageMB',47450,'D','restapi',0,'2021-01-09 01:02:16.655204',''),
 	 ('FileStorageMB',135318,'D','restapi',0,'2021-01-09 01:02:16.655204','');
 INSERT INTO salesforce.measureconfig__c ("name",max_value,frequency,"source",active,eventdate,query) VALUES
-	 ('DataStorageMB',999999,'H','soql_count',0,'2021-01-09 01:02:16','SELECT count() FROM DataStorageMB WHERE status = ''queued'''),
+	 ('AsyncApexJob',999999,'H','soql_count',0,'2021-01-09 01:02:16','SELECT count() FROM AsyncApexJob WHERE status = ''queued'''),
 	 ('MassEmail',5000,'H','restapi',0,'2021-01-09 01:02:16.655204',''),
 	 ('PermissionSets',1500,'D','restapi',0,'2021-01-09 01:02:16.655204',''),
 	 ('SingleEmail',100,'H','restapi',0,'2021-01-09 01:02:16.655204',''),
