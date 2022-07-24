@@ -65,6 +65,7 @@ class Prediction:
         self.__process_memory = None  # memory info
         self.__y_max_value = y_max_value
         self.__smape = None
+        self.__frequency = None
         self.__rmse = None
         self.__last_train_time = None
         self.__measure = measure
@@ -98,6 +99,16 @@ class Prediction:
         logging.logger.debug("Memory used in GB after training the model: {:.2f}".format(
             float(post/(10**9))))  # Calculate the memory used after loading the model
     
+    
+    # frequency of the data
+    @property
+    def frequency(self):
+        return self.__frequency
+
+    @frequency.setter
+    def frequency(self, frequency):
+        self.__frequency = frequency
+        
     # forecast_ub
     @property
     def forecast_ub(self):
@@ -319,6 +330,7 @@ class Prediction:
         self.train_data = train_data
         self.test_data = test_data
         self.df = df
+        self.frequency = freq
         self.__df_data = df_data
 
     def train(self):
@@ -399,7 +411,13 @@ class Prediction:
         
         # Obtain the time stamps corresponding to the test data
         sub_test_data_time_stamps = sub_test_data.univariates[sub_test_data.names[0]].time_stamps
-        time_stamps = [max(sub_test_data_time_stamps)+ x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        if self.frequency == 'D':
+            time_stamps = [max(sub_test_data_time_stamps)+ x * 60 * 60 * 24 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        elif self.frequency == 'M':
+            time_stamps = [max(sub_test_data_time_stamps)+ x * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
+        else:
+            # default to H
+            time_stamps = [max(sub_test_data_time_stamps)+ x * 60 * 60 for x in range(int(config.MERLION_MAX_FORECAST_STEPS))]
         logging.logger.debug('time stamps: %s', time_stamps)
         self.forecast, self.forecast_lb, self.forecast_ub = selector_factory_loaded.forecast(
             time_stamps=time_stamps,

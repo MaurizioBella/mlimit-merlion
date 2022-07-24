@@ -12,11 +12,15 @@ logging = LoggerClass.instance()
 warnings.filterwarnings("ignore")
 
 
-def predict_hourly_limits(measure, train_only=False):
+def predict_rest_limits(measure, freq, train_only=False):
     """ Start training and prediction for a hourly frequency
         Parameters
+        measures (String): list of event rest limits
+        freq (String): frequency of the prediction
+        train_only (Boolean): if True, only train the model
         ----------
         Returns
+        void - it will save the model in the database
         -------
         """
     df = utils_db.get_measures_by_limitname(measure)
@@ -34,7 +38,7 @@ def predict_hourly_limits(measure, train_only=False):
                 df=df,
                 ds='eventdate',
                 y='remaining_value',
-                freq='H')
+                freq=freq)
             if (train_only == True):
                 # Train the model
                 prediction.train()

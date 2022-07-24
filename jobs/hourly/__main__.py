@@ -10,7 +10,7 @@ import time
 import sys
 from memory_profiler import profile
 from rq import Queue
-from jobs.hourly.predict_hourly_limits import predict_hourly_limits
+from jobs.hourly.predict_rest_limits import predict_rest_limits
 from src.utils.retry_rest_api_resource_limits import retry_rest_api_resource_limits
 from src.utils.retry_generic_limits import main as retry_generic_limits
 from src.config.error import NoSalesforceConnection
@@ -19,13 +19,13 @@ logging = LoggerClass.instance()
 
 
 @profile
-def calculate_memory(measure, train_only):
+def calculate_memory(measure,freq, train_only):
     """Calculate Memory
     profile is a python module for monitoring memory consumption of a process
     Args:
         measure ([List]): list of event rest limits
     """
-    predict_hourly_limits(measure, train_only)
+    predict_rest_limits(measure,freq, train_only)
 
 
 if __name__ == '__main__':
@@ -47,22 +47,25 @@ if __name__ == '__main__':
         except NoSalesforceConnection as no_salesforce_connection:
             logging.logger.error(no_salesforce_connection)
     for variate in utils_db.get_active_measure_config():
+        measure = variate[0]
+        freq = variate[1]
         logging.logger.debug(
-            'Start worker variate %s train %s' % (variate[0], train_only))
+            'Start worker variate %s frequency %s train %s' % (measure,freq, train_only))
         if int(config.WORKER_TYPE) == 1:
-            calculate_memory(variate[0], train_only)
+            calculate_memory(measure,freq, train_only)
             end_time = round(time.time() - start_time, 2)
             logging.logger.info('End jobs process took %s secs', end_time)
         elif int(config.WORKER_TYPE) == 2:
             q = Queue('low', connection=conn)
             try:
-                dar = q.enqueue(predict_hourly_limits,
+                dar = q.enqueue(predict_rest_limits,
                                 # depends_on=gl,
                                 ttl='6h',
                                 failure_ttl='5d',
                                 job_timeout='2h',
                                 kwargs={
-                                    'measure': variate[0],
+                                    'measure': measure,
+                                    'freq': freq,
                                     'train_only': train_only
                                 })
             except Exception as e:

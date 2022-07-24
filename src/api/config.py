@@ -70,7 +70,7 @@ class ConfigRestApi(Resource):
                                             'H' if x.startswith('Daily') else
                                             'D' if x.startswith('Monthly') else
                                             'M' if x.startswith('Hourly') else
-                                            'F')
+                                            'D')
             logging.logger.info('retrieved %s limits \n %s' %
                                 (len(df), df.head(3).T))
             return df

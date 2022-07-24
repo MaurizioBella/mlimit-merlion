@@ -49,7 +49,7 @@ python jobs/hourly
 python jobs/hourly --train-only
 ```
 
-- You can change them based on your business requirements
+- You can change them based on your business requirements and based on the frequency configured on Measures Config entity
 
 ## Deploy it to your local computer
 

@@ -71,7 +71,7 @@ def add_holiday():
 
 def add_resource_limit():
     '''
-    Add demo record to Measure
+    Add resource limit demo record to Measure
     '''
     df_resource = pd.read_csv(os.path.join(__location__, 'measure.csv'))
 
@@ -96,6 +96,36 @@ def add_resource_limit():
     else:
         logging.logger.error(
             'Resource Limit: nothing to add. Check the Config Limits')
+
+def add_soql_count():
+    '''
+    Add sql_count demo record to Measure
+    '''
+    df_resource = pd.read_csv(os.path.join(__location__, 'measure.csv'))
+
+    source = 'soql_count'
+    df_limits = pd.read_sql(Session.query(
+        MeasureConfig).filter(MeasureConfig.active == True, MeasureConfig.source == source).statement, Session.bind)
+
+    if len(df_limits.index) > 0:
+        df_resource['limitname'] = df_resource['limitname'].map(
+            df_limits.set_index("name")["sfid"])
+        df = df_resource.dropna()
+        try:
+            Session.bulk_insert_mappings(
+                Measure, df.to_dict(orient="records"))
+            Session.commit()
+            logging.logger.debug('added Measure records %s', df.shape)
+        except exc.SQLAlchemyError as exc_error:
+            logging.logger.error(exc_error)
+            raise
+        finally:
+            Session.close()
+    else:
+        logging.logger.error(
+            'Resource Limit: nothing to add. Check the Config Limits')
+
+
 
 
 def add_config_limit():
@@ -122,6 +152,7 @@ def main():
         add_config_limit()
         add_config_auth()
     add_resource_limit()
+    add_soql_count()
     add_holiday()
 
 

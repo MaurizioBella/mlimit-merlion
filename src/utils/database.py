@@ -111,7 +111,7 @@ def get_active_measure_config():
         text: Id of governor limits configured in Measure Config
     """
     config_limits = Session.query(
-        MeasureConfig.sfid).filter(MeasureConfig.active == True).all()
+        MeasureConfig.sfid, MeasureConfig.frequency).filter(MeasureConfig.active == True).all()
     return config_limits
 
 
