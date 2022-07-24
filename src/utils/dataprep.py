@@ -67,9 +67,7 @@ def preprocessing(
 
 
 def postprocessing(prediction):
-    # df_fact = df_fact.rename(columns={
-    #     'y': 'fact'})
-
+    """ postprocessing of the prediction"""
     df_forecast = prediction.forecast.to_pd()
     df_lb = prediction.forecast_lb.to_pd()
     df_ub = prediction.forecast_ub.to_pd()
